@@ -21,7 +21,7 @@ const loginService = async (loginInfo) => {
 
   const token = jwtSign({ email, password });
 
-  return token;
+  return { token };
 };
 
 module.exports = loginService; 
