@@ -9,7 +9,7 @@ const errors = {
 
 const getUserByEmailService = async (email) => {
   const userEmail = await User.findOne({ where: { email } });
-  if (!userEmail) throw errors.emailExists;
+  if (userEmail) throw errors.emailExists;
   return userEmail;
 };
 
@@ -19,11 +19,11 @@ const createUserService = async (newUserInfo) => {
   validate.isValidDisplayName(displayName);
   validate.isValidEmail(email);
   validate.isValidPassword(password);
-  getUserByEmailService(email);
+  await getUserByEmailService(email);
 
-  const newUser = await User.create({ displayName, email, password, image });
+  const { dataValues: { id } } = await User.create({ displayName, email, password, image });
 
-  const token = jwtSign(newUser);
+  const token = jwtSign({ id, email });
 
   return token;
 };

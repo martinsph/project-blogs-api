@@ -1,11 +1,14 @@
 const express = require('express');
 const { 
-  createUserController, listUserController, getUserByIdController } = require('./userController');
+  createUserController, 
+  listUserController, 
+  getUserByIdController,
+} = require('./userController');
 
-const router = express.Router({ mergeParams: true });
+const userRouter = express.Router({ mergeParams: true });
 
-router.post('/', createUserController);
-router.get('/', listUserController);
-router.get('/:id', getUserByIdController);
+userRouter.post('/', createUserController);
+userRouter.get('/', listUserController);
+userRouter.get('/:id', getUserByIdController);
 
-module.exports = router;
+module.exports = userRouter;

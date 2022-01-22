@@ -2,7 +2,7 @@ const service = require('../services/serviceUser');
 
 const createUserController = async (req, res, next) => {
   try {
-    const { displayName, email, password, image } = req.body;
+    const { displayName, email, password, image = '' } = req.body;
 
     const result = await service.createUserService({ displayName, email, password, image });
     return res.status(201).json(result);
@@ -34,7 +34,7 @@ const getUserByIdController = async (req, res, next) => {
 // const removeUserController = async (req, res, next) => {
 //   try {
 //     const { id } = req.params;
-//     const result = await service.removeUser({ id });
+//     const result = await service.removeUser(id);
 
 //     return res.status(204).json(result);
 //   } catch (error) {

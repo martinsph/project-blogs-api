@@ -1,7 +1,7 @@
 const express = require('express');
 const error = require('./middlewares/error');
-const { loginRouter } = require('./controllers/loginRouter');
-const { userRouter } = require('./controllers/userRouter');
+const loginRouter = require('./controllers/loginRouter');
+const userRouter = require('./controllers/userRouter');
 
 const app = express();
 
