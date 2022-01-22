@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const validate = require('../middlewares/validation');
+const validate = require('../middlewares/userValidation');
 const { jwtSign } = require('../middlewares/authentication');
 
 const errors = {
