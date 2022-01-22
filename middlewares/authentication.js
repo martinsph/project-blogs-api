@@ -24,8 +24,7 @@ const jwtDecode = (req, _res, next) => {
   if (!authorization) throw errors.missingToken;
   
   try {
-    const decoded = jwt.verify(authorization, JWT_SECRET);
-    console.log(decoded);
+    jwt.verify(authorization, JWT_SECRET);
     next();
   } catch (error) {
     throw errors.invalidToken;

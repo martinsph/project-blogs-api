@@ -2,12 +2,14 @@ const express = require('express');
 const error = require('./middlewares/error');
 const loginRouter = require('./controllers/loginRouter');
 const userRouter = require('./controllers/userRouter');
+const categoriesRouter = require('./controllers/categoriesRouter');
 
 const app = express();
 
 app.use(express.json());
 app.use('/user', userRouter);
 app.use('/login', loginRouter);
+app.use('/categories', categoriesRouter);
 app.use(error);
 
 // não remova esse endpoint, e para o avaliador funcionar.
