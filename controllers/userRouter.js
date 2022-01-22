@@ -10,6 +10,6 @@ const userRouter = express.Router({ mergeParams: true });
 
 userRouter.post('/', createUserController);
 userRouter.get('/', jwtDecode, listUserController);
-userRouter.get('/:id', getUserByIdController);
+userRouter.get('/:id', jwtDecode, getUserByIdController);
 
 module.exports = userRouter;
