@@ -31,16 +31,16 @@ const getUserByIdController = async (req, res, next) => {
   }
 };
 
-// const removeUserController = async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const result = await service.removeUser(id);
+const removeUserController = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const result = await service.removeUserService(id);
 
-//     return res.status(204).json(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+    return res.status(204).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = { 
-  createUserController, listUserController, getUserByIdController }; 
+  createUserController, listUserController, getUserByIdController, removeUserController };
