@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { BlogPosts, Categories, Users } = require('../models');
+const { BlogPosts, Categories, User } = require('../models');
 const validate = require('../middlewares/postsValidation');
 
 const errors = {
@@ -30,17 +30,22 @@ const createPostService = async (newPostInfo) => {
 
 const listPostService = async () => {
   const allPosts = await BlogPosts.findAll({ include: [
-      { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
       { model: Categories, as: 'categories', through: { attributes: [] } }],
   });
 
   return allPosts;
 };
 
-const getPostByIdService = async (id) => {
-  const userID = await BlogPosts.findByPk(id);
-  if (!userID) throw errors.wrongId;
-  return userID;
-};
+// const getPostByIdService = async (id) => {
+//   const userID = await BlogPosts.findByPk(id {
+//     include: [
+//       { model: User, as: 'user' },
+//       { model: Categories, as: 'categories', through: { attributes: [] } },
+//     ],
+//   });
+//   if (!userID) throw errors.wrongId;
+//   return userID;
+// };
 
-module.exports = { createPostService, listPostService, getPostByIdService }; 
+module.exports = { createPostService, listPostService }; 
