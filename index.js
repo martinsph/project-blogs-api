@@ -1,9 +1,9 @@
 const express = require('express');
 const error = require('./middlewares/error');
-const loginRouter = require('./controllers/loginRouter');
-const userRouter = require('./controllers/userRouter');
-const categoriesRouter = require('./controllers/categoriesRouter');
-const postRouter = require('./controllers/postRouter');
+const loginRouter = require('./controllers/routers/loginRouter');
+const userRouter = require('./controllers/routers/userRouter');
+const categoriesRouter = require('./controllers/routers/categoriesRouter');
+const postRouter = require('./controllers/routers/postRouter');
 
 const app = express();
 

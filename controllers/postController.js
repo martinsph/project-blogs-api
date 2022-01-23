@@ -2,9 +2,9 @@ const service = require('../services/servicePost');
 
 const createPostController = async (req, res, next) => {
   try {
-    const { displayName, email, password, image = '' } = req.body;
-
-    const result = await service.createPostService({ displayName, email, password, image });
+    const { title, categoryIds, content } = req.body;
+    const { id } = req.user;
+    const result = await service.createPostService({ title, categoryIds, content, id });
     return res.status(201).json(result);
   } catch (error) {
     next(error);

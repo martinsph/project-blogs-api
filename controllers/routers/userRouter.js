@@ -1,10 +1,10 @@
 const express = require('express');
-const { jwtDecode } = require('../middlewares/authentication');
+const { jwtDecode } = require('../../middlewares/authentication');
 const { 
   createUserController, 
   listUserController, 
   getUserByIdController,
-} = require('./userController');
+} = require('../userController');
 
 const userRouter = express.Router({ mergeParams: true });
 

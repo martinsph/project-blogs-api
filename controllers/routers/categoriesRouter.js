@@ -2,8 +2,8 @@ const express = require('express');
 const { 
   createCategoriesController, 
   listCategoriesController,
-} = require('./categoriesController');
-const { jwtDecode } = require('../middlewares/authentication');
+} = require('../categoriesController');
+const { jwtDecode } = require('../../middlewares/authentication');
 
 const categoriesRouter = express.Router({ mergeParams: true });
 

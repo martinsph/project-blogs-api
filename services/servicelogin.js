@@ -17,9 +17,9 @@ const loginService = async (loginInfo) => {
 
   validate.isValidEmail(email);
   validate.isValidPassword(password);
-  await getUserByEmailService(email);
+  const { id } = await getUserByEmailService(email);
 
-  const token = jwtSign({ email, password });
+  const token = jwtSign({ email, password, id });
 
   return { token };
 };

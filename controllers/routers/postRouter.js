@@ -1,14 +1,14 @@
 const express = require('express');
-const { jwtDecode } = require('../middlewares/authentication');
+const { jwtDecode } = require('../../middlewares/authentication');
 const { 
   createPostController, 
   listPostController, 
   getPostByIdController,
-} = require('./postController');
+} = require('../postController');
 
 const postRouter = express.Router({ mergeParams: true });
 
-postRouter.post('/', createPostController);
+postRouter.post('/', jwtDecode, createPostController);
 postRouter.get('/', jwtDecode, listPostController);
 postRouter.get('/:id', jwtDecode, getPostByIdController);
 
