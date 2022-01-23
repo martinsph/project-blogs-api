@@ -3,8 +3,7 @@ const { BlogPosts, Categories, User } = require('../models');
 const validate = require('../middlewares/postsValidation');
 
 const errors = {
-  wrongId: { status: 404, message: 'User does not exist' },
-  emailExists: { status: 409, message: 'User already registered' },
+  postNotExist: { status: 404, message: 'Post does not exist' },
   categoryIdNotFound: { status: 400, message: '"categoryIds" not found' },
 };
 
@@ -37,15 +36,14 @@ const listPostService = async () => {
   return allPosts;
 };
 
-// const getPostByIdService = async (id) => {
-//   const userID = await BlogPosts.findByPk(id {
-//     include: [
-//       { model: User, as: 'user' },
-//       { model: Categories, as: 'categories', through: { attributes: [] } },
-//     ],
-//   });
-//   if (!userID) throw errors.wrongId;
-//   return userID;
-// };
+const getPostByIdService = async (id) => {
+  const postID = await BlogPosts.findByPk(id, { include: [
+      { model: User, as: 'user' },
+      { model: Categories, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  if (!postID) throw errors.postNotExist;
+  return postID;
+};
 
-module.exports = { createPostService, listPostService }; 
+module.exports = { createPostService, listPostService, getPostByIdService }; 
