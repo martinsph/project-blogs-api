@@ -1,10 +1,13 @@
 const { Op } = require('sequelize');
 const { BlogPosts, Categories, User } = require('../models');
-const validate = require('../middlewares/postsValidation');
+const validatePost = require('../middlewares/postsValidation');
+const validadteUpdate = require('../middlewares/postUpdateValidation');
 
 const errors = {
   postNotExist: { status: 404, message: 'Post does not exist' },
   categoryIdNotFound: { status: 400, message: '"categoryIds" not found' },
+  categoryEdition: { status: 400, message: 'Categories cannot be edited' },
+  unauthorizedUser: { status: 401, message: 'Unauthorized user' },
 };
 
 const checkCategoryId = async (categoryId) => {
@@ -16,9 +19,9 @@ const checkCategoryId = async (categoryId) => {
 const createPostService = async (newPostInfo) => {
   const { title, categoryIds, content, id: userId } = newPostInfo;
 
-  validate.isValidTitle(title);
-  validate.isValidContent(content);
-  validate.isValidCategoryId(categoryIds);
+  validatePost.isValidTitle(title);
+  validatePost.isValidContent(content);
+  validatePost.isValidCategoryId(categoryIds);
 
   await checkCategoryId(categoryIds);
 
@@ -37,13 +40,35 @@ const listPostService = async () => {
 };
 
 const getPostByIdService = async (id) => {
-  const postID = await BlogPosts.findByPk(id, { include: [
+  const postId = await BlogPosts.findByPk(id, { include: [
       { model: User, as: 'user' },
       { model: Categories, as: 'categories', through: { attributes: [] } },
     ],
   });
-  if (!postID) throw errors.postNotExist;
-  return postID;
+  if (!postId) throw errors.postNotExist;
+  return postId;
 };
 
-module.exports = { createPostService, listPostService, getPostByIdService }; 
+const updatePostService = async ({ title, content, categoryIds, userId, id }) => {
+  validadteUpdate.isValidTitle(title);
+  validadteUpdate.isValidContent(content);
+
+  if (categoryIds.length > 0) throw errors.categoryEdition;
+
+  const postId = await BlogPosts.findByPk(id, { include: [
+      { model: User, as: 'user' },
+      { model: Categories, as: 'categories', through: { attributes: [] } },
+    ] });
+
+  if (postId.userId !== userId) throw errors.unauthorizedUser;
+  
+  await BlogPosts.update({ title, content, userId }, { where: { id } });
+
+  const updatedId = await BlogPosts.findByPk(id, { include: [
+    { model: User, as: 'user' }, 
+    { model: Categories, as: 'categories', through: { attributes: [] } }],
+  });
+  return updatedId;
+};
+
+module.exports = { createPostService, listPostService, getPostByIdService, updatePostService }; 

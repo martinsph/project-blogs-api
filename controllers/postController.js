@@ -31,6 +31,19 @@ const getPostByIdController = async (req, res, next) => {
   }
 };
 
+const updatePostController = async (req, res, next) => {
+  try {
+    const { title, content, categoryIds = [] } = req.body;
+    const { id } = req.params;
+    // passa id para userId
+    const { id: userId } = req.user;
+    const result = await service.updatePostService({ title, content, categoryIds, id, userId });
+    return res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // const removePostController = async (req, res, next) => {
 //   try {
 //     const { id } = req.params;
@@ -43,4 +56,4 @@ const getPostByIdController = async (req, res, next) => {
 // };
 
 module.exports = { 
-  createPostController, listPostController, getPostByIdController }; 
+  createPostController, listPostController, getPostByIdController, updatePostController }; 
