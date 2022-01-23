@@ -44,16 +44,22 @@ const updatePostController = async (req, res, next) => {
   }
 };
 
-// const removePostController = async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const result = await service.removeUser(id);
+const removePostController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    // console.log('1 - ', req.user);
+    const { id: userId } = req.user;
+    const result = await service.removePostService({ id, userId });
 
-//     return res.status(204).json(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+    return res.status(204).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = { 
-  createPostController, listPostController, getPostByIdController, updatePostController }; 
+  createPostController, 
+  listPostController, 
+  getPostByIdController, 
+  updatePostController, 
+  removePostController };

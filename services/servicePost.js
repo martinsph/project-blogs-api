@@ -71,4 +71,25 @@ const updatePostService = async ({ title, content, categoryIds, userId, id }) =>
   return updatedId;
 };
 
-module.exports = { createPostService, listPostService, getPostByIdService, updatePostService }; 
+const removePostService = async ({ id, userId }) => {
+  // console.log('2 -', userId);
+
+  const isValidPost = await BlogPosts.findByPk(id);
+  if (!isValidPost) throw errors.postNotExist;
+
+  const postId = await BlogPosts.findByPk(id, { include: [
+    { model: User, as: 'user' },
+    { model: Categories, as: 'categories', through: { attributes: [] } }],
+  });
+
+  if (postId.userId !== userId) throw errors.unauthorizedUser;  
+
+  await BlogPosts.destroy({ where: { id } });
+};
+
+module.exports = { 
+  createPostService, 
+  listPostService, 
+  getPostByIdService, 
+  updatePostService, 
+  removePostService }; 
